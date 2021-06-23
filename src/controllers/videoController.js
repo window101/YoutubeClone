@@ -1,6 +1,7 @@
 
+
 export const trending = (req, res) => {
-    res.render("home");
+    res.render("home", {pageTitle : "Home"});
 }
 export const see = (req, res) => {
     
