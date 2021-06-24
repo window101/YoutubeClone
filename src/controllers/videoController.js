@@ -1,7 +1,23 @@
 
+import Video from "../models/Video";
 
-export const trending = (req, res) => {
-    res.render("home", {pageTitle : "Home"});
+/* callback 방식
+Video.find({}, (error, videos) => {
+    if(error) {
+        return res.render("server-error");
+    }
+    return res.render("home", { pageTitle : "Home", videos});
+});
+
+*/
+
+export const home = async (req, res) => {
+    try {
+        const videos = await Video.find({})
+        return res.render("home", {pageTitle : "Home", videos});
+    } catch {
+        return res.render("server-error");
+    }
 }
 export const see = (req, res) => {
     

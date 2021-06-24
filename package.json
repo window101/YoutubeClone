@@ -7,7 +7,7 @@
     "url": "git+https://github.com/window101/YoutubeClone.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server.js"
+    "dev": "nodemon --exec babel-node src/init.js"
   },
   "author": "HwaJun<hwajun15@naver.com>",
   "license": "MIT",
