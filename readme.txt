@@ -11,8 +11,9 @@
 -Search / Like / Comment on / Upload Photo..
 ... 등등 세부 기술 구현
 
+3) 슬랙 백엔드 코딩
 
-3) 우버이츠 백엔드 코딩 ~ 
+4) 우버이츠 백엔드 코딩 ~ 
 -Next js + Graphql + Apollo
 -User Authentication
 -Email Verification
@@ -24,7 +25,7 @@
 -+ Cryptocurrency Payment system
 
 
-4) IT 대외 연합동아리에서 진행하는 3개월 실제 프로젝트 개발
+5) IT 대외 연합동아리에서 진행하는 3개월 실제 프로젝트 개발
 =>몇가지 동아리 3개월동안 진행
 =>삼성 청년 SW 아카데미 
 
