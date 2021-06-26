@@ -12,14 +12,9 @@ const videoSchema = new mongoose.Schema({
     },
 });
 
-videoSchema.pre('save', async function() { // mongoose middleware, 모델 생성전에 정의해야 함
-    console.log('pre hashtags', this.hashtags);
-    this.hashtags = this.hashtags[0]
-    .split(",")
-    .map((word) => word.startsWith('#') ? word : `#${word}`)
-    console.log('after hashtags', this.hashtags);
-})
-
+videoSchema.static('formatHashtags', function(hashtags) { // Video.create와 같이 자체적으로 만들 수 있다.
+    return hashtags.split(",").map((word) => (word.startsWith("#") ? word : `#${word}`));
+});
 
 const Video = mongoose.model("Video", videoSchema);
 

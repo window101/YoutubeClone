@@ -12,7 +12,7 @@ Video.find({}, (error, videos) => {
 */
 
 export const home = async (req, res) => {
-    const videos = await Video.find({});
+    const videos = await Video.find({}).sort({ createdAt: "desc"});
     //console.log(videos);
     return res.render("home", {pageTitle: "Home", videos});
 }
@@ -23,14 +23,14 @@ export const watch = async (req, res) => {
     if(video) {
         return res.render("watch", {pageTitle : video.title, video });
     }
-    return res.render("404", {pageTitle:"Video not found."});
+    return res.status(404).render("404", {pageTitle:"Video not found."});
 }
 
 export const getEdit = async (req, res) => {
     const {id} = req.params;
     const video = await Video.findById(id);
     if(!video) {
-        return res.render("404", {pageTitle: "Video not found." });
+        return res.status(404).render("404", {pageTitle: "Video not found." });
     }
     return res.render("edit", {pageTitle : `Edit ${video.title}`, video });
 }
@@ -40,13 +40,13 @@ export const postEdit = async (req, res) => {
     const {title, description, hashtags} = req.body;
     const video = await Video.exists({ _id: id}); //_id : mongodb의 id 형식
     if(!video) {
-        return res.render("404", {pageTitle: "Video not found."});
+        return res.status(404).render("404", {pageTitle: "Video not found."});
     }
 
     await Video.findByIdAndUpdate(id, {
         title,
         description,
-        hashtags,
+        hashtags:Video.formatHashtags(hashtags),
     });
     /* 이렇게도 할 수 있다
     video.title = title;
@@ -60,12 +60,24 @@ export const postEdit = async (req, res) => {
 }
 
 
-export const search = (req, res) => res.send("Search");
+export const search = async (req, res) => {
+
+    //console.log(req.query);
+    const { keyword } = req.query;
+    let videos = [];
+    if(keyword) {
+        videos = await Video.find({
+            title: {
+                $regex: new RegExp(`${keyword}$`, "i") // keyword로 끝나는 단어 검색, "i" : 대소문자 구별 안함 (정규표현식)
+                                    // new RegExp( keyword ,"i") : 그냥 keyword를 포함하는 것 검색
+                                    // new RegExp(`^${keyword}`, "i") : keyword로 시작하는 것 검색
+            },
+        });
+    }
+    return res.render("search", {pageTitle : "Search", videos });
+};
 export const upload = (req, res) => res.send("Upload");
-export const deleteVideo = (req, res) => {
-    console.log(req.params);
-    return res.send("Delete Video");
-}
+
 
 export const getUpload = (req, res) => {
     return res.render("upload", { pageTitle: "Upload Video "});
@@ -79,16 +91,22 @@ export const postUpload = async (req, res) => {
         await Video.create({
             title,
             description,
-            hashtags,
+            hashtags: Video.formatHashtags(hashtags),
            
         });
         
         return res.redirect("/");
     }catch(error) {
         //console.log(error);
-        return res.render("upload", {
+        return res.status(400).render("upload", {
             pageTitle : "Upload Video", 
             errorMessage: error._message
         });
     }
 };
+
+export const deleteVideo = async (req, res) => {
+    const { id } = req.params;
+    await Video.findByIdAndDelete(id);
+    return res.redirect("/");
+}

@@ -7,6 +7,7 @@ import {
     postUpload, 
     deleteVideo,
     postEdit,
+    
 } from "../controllers/videoController";
 
 
@@ -22,8 +23,10 @@ videoRouter.route("/:id([0-9a-f]{24})/edit")
            .get(getEdit)
            .post(postEdit); // 하나의 url에 post, get request 할 때 사용하는 표현
 
+videoRouter.route("/:id([0-9a-f]{24})/delete").get(deleteVideo);
 
-videoRouter.get("/:id(\\d+)/delete", deleteVideo);
+
+//videoRouter.get("/:id(\\d+)/delete", deleteVideo);
 
 export default videoRouter;
 
