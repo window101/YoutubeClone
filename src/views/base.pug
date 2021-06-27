@@ -6,7 +6,7 @@ html(lang="ko")
 
     body 
         header 
-           
+
             h1=pageTitle 
             nav 
                 ul 
@@ -14,7 +14,7 @@ html(lang="ko")
                         a(href="/") Home
                     if loggedIn
                         li 
-                            a(href="/logout") Log Out 
+                            a(href="/users/logout") Log Out 
                         li 
                             a(href="/my-profile") #{loggedInUser.name}'s Profile
                     else    
