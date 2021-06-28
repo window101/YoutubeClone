@@ -13,4 +13,3 @@ userRouter.get("/github/finish", finishGithubLogin);
 
 export default userRouter;
 
-쿠팡배달이츠
