@@ -1,6 +1,6 @@
 
 import express from "express";
-import { protectorMiddleware, publicOnlyMiddleware, uploadFiles} from "../middlewares";
+import { protectorMiddleware, publicOnlyMiddleware, avatarUpload} from "../middlewares";
 import {
     getEdit, 
     postEdit,
@@ -20,7 +20,7 @@ userRouter
     .route("/edit")
     .all(protectorMiddleware)
     .get(getEdit)
-    .post(uploadFiles.single("avatar"), postEdit); // all : 모든 method에 적용, req.file 접근가능
+    .post(avatarUpload.single("avatar"), postEdit); // all : 모든 method에 적용, req.file 접근가능
 
 userRouter.route("/change-password").all(protectorMiddleware).get(getChangePassword).post(postChangePassword);
 
