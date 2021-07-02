@@ -21,7 +21,7 @@ app.use(logger);
 app.use(express.urlencoded({ extended:true}));
 
 app.use(session({
-    secret: process.env.COOKIE_SECRET, // 무작위로 => 쿠키를 sign 함
+    secret: process.env.COOKIE_SECRET, // 쿠키를 sign 함
     resave: false,
     saveUninitialized: false, // resave 조건과 함께 false를 하면 로그인한 사용자 즉, 세션을 수정한 것에 대해서만 세션을 저장
     cookie: {
@@ -44,6 +44,7 @@ app.get("/add-one", (req, res, next) => {
 })
 
 app.use(localsMiddleware);
+app.use("/uploads", express.static("uploads"));
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
