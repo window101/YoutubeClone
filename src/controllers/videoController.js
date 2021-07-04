@@ -1,5 +1,6 @@
 
 import Video from "../models/Video";
+import User from "../models/User";
 
 /* callback 방식
 Video.find({}, (error, videos) => {
@@ -19,11 +20,15 @@ export const home = async (req, res) => {
 
 export const watch = async (req, res) => {
     const {id} = req.params;
-    const video = await Video.findById(id);
-    if(video) {
-        return res.render("watch", {pageTitle : video.title, video });
+    const video = await Video.findById(id).populate("owner");
+    //const owner = await User.findById(video.owner);
+    //console.log(owner);
+    console.log(video);
+    if(!video) {
+        return res.status(404).render("404", {pageTitle:"Video not found."});
     }
-    return res.status(404).render("404", {pageTitle:"Video not found."});
+    return res.render("watch", {pageTitle : video.title, video });
+    
 }
 
 export const getEdit = async (req, res) => {
@@ -85,6 +90,9 @@ export const getUpload = (req, res) => {
 
 export const postUpload = async (req, res) => {
 
+    const {
+        user: {_id}, 
+    } = req.session;
     const file = req.file;
     const { title, description, hashtags } = req.body;
     console.log(title, description, hashtags);
@@ -94,6 +102,7 @@ export const postUpload = async (req, res) => {
             title,
             description,
             fileUrl: file.path,
+            owner: _id,
             hashtags: Video.formatHashtags(hashtags),
            
         });
