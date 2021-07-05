@@ -33,21 +33,33 @@ export const watch = async (req, res) => {
 
 export const getEdit = async (req, res) => {
     const {id} = req.params;
+    const {user : {_id}} = req.session;
     const video = await Video.findById(id);
     if(!video) {
         return res.status(404).render("404", {pageTitle: "Video not found." });
     }
+    
+    if(String(video.owner) !== String(_id)) { // 영상의 owner가 아니라면 edit 페이지를 보여주지 않는다. 
+        return res.status(403).redirect("/");
+    }
+
     return res.render("edit", {pageTitle : `Edit ${video.title}`, video });
 }
 
 export const postEdit = async (req, res) => {
+    const {
+        user : {_id},
+    } = req.session;
+
     const {id} = req.params;
     const {title, description, hashtags} = req.body;
     const video = await Video.exists({ _id: id}); //_id : mongodb의 id 형식
     if(!video) {
         return res.status(404).render("404", {pageTitle: "Video not found."});
     }
-
+    if(String(video.owner) !== String(_id)) { // 영상의 owner가 아니라면 edit 페이지를 보여주지 않는다. 
+        return res.status(403).redirect("/");
+    }
     await Video.findByIdAndUpdate(id, {
         title,
         description,
@@ -98,7 +110,7 @@ export const postUpload = async (req, res) => {
     console.log(title, description, hashtags);
 
     try {
-        await Video.create({
+        const newVideo = await Video.create({
             title,
             description,
             fileUrl: file.path,
@@ -106,7 +118,9 @@ export const postUpload = async (req, res) => {
             hashtags: Video.formatHashtags(hashtags),
            
         });
-        
+        const user = await User.findById(_id);
+        user.videos.push(newVideo._id);
+        user.save();
         return res.redirect("/");
     }catch(error) {
         //console.log(error);
@@ -119,6 +133,17 @@ export const postUpload = async (req, res) => {
 
 export const deleteVideo = async (req, res) => {
     const { id } = req.params;
-    await Video.findByIdAndDelete(id);
+
+    const {
+        user : {_id},
+    } = req.session;
+    const video = await Video.findById(id);
+    if(!video) {
+        return res.status(404).render("404", {pageTitle: "Video not found. "});
+    }
+    if(String(video.owner) !== String(_id)) {
+        return res.status(403).redirect("/");
+    }
+    await Video.findByIdAndDelete(id); // 비디오 삭제
     return res.redirect("/");
 }
