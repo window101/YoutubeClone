@@ -44,7 +44,9 @@ app.get("/add-one", (req, res, next) => {
 })
 
 app.use(localsMiddleware);
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("uploads")); // uploads 폴더를 대중들이 볼 수 있게 한다
+app.use("/assets", express.static("assets")); // webpack이 코드 변환한 assets 폴더를 공개 
+
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
