@@ -40,6 +40,7 @@ export const getEdit = async (req, res) => {
     }
     
     if(String(video.owner) !== String(_id)) { // 영상의 owner가 아니라면 edit 페이지를 보여주지 않는다. 
+        req.flash("error", "Not authorized");
         return res.status(403).redirect("/");
     }
 
@@ -146,4 +147,16 @@ export const deleteVideo = async (req, res) => {
     }
     await Video.findByIdAndDelete(id); // 비디오 삭제
     return res.redirect("/");
+}
+
+export const registerView = async (req, res) => {
+
+    const {id} = req.params;
+    const video = await Video.findById(id);
+    if(!video) {
+        return res.sendStatus(404); // sendStatus => 상태코드만 보내고 연결 종료 시 사용, status => 연결종료가 안됨
+    }
+    video.meta.views = video.meta.views + 1;
+    await video.save();
+    return res.sendStatus(200);
 }

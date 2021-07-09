@@ -4,12 +4,14 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
 import { localsMiddleware } from "./middlewares";
+import apiRouter from "./routers/apiRouter";
 
 
 const app = express();
@@ -38,6 +40,8 @@ app.use((req, res, next) => {
     });
 })
 */
+
+app.use(flash());
 app.get("/add-one", (req, res, next) => {
     return res.send(`Session id : ${req.session.id}`);
     next();
@@ -50,5 +54,6 @@ app.use("/assets", express.static("assets")); // webpack이 코드 변환한 ass
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
+app.use("/api", apiRouter);
 
 export default app;

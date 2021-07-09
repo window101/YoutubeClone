@@ -15,6 +15,7 @@ export const protectorMiddleware = (req, res, next) => { // 사용자가 로그�
     if(req.session.loggedIn) {
         next();
     }else {
+        req.flash("error", "Log in first."); // redirect 하기 전에 사용자에게 message 전송 가능
         return res.redirect("/login");
     }
 }
@@ -23,6 +24,7 @@ export const publicOnlyMiddleware = (req, res, next) => { // protectorMiddleware
     if(!req.session.loggedIn) {                             // 즉, 로그아웃 돼 있어야 next()
         return next();
     }else {
+        req.flash("error", "Not authorized"); // 템플릿에서 messages.(에러의 종류)로 접근가능
         return res.redirect("/");
     }
 }
