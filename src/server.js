@@ -20,7 +20,9 @@ const logger = morgan("dev");
 app.set("view engine", "pug"); // 뷰 엔진을 pug로 정의한다
 app.set("views", process.cwd() + "/src/views");
 app.use(logger);
-app.use(express.urlencoded({ extended:true}));
+app.use(express.urlencoded({ extended:true})); // client에서 req.body에 form 보내는거 해석
+//app.use(express.text()); // client에서 req.body에 text 보내는거 해석
+app.use(express.json()); // string-> js object
 
 app.use(session({
     secret: process.env.COOKIE_SECRET, // 쿠키를 sign 함

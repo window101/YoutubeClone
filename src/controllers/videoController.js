@@ -1,6 +1,7 @@
 
 import Video from "../models/Video";
 import User from "../models/User";
+import Comment from "../models/Comment";
 
 /* callback 방식
 Video.find({}, (error, videos) => {
@@ -159,4 +160,45 @@ export const registerView = async (req, res) => {
     video.meta.views = video.meta.views + 1;
     await video.save();
     return res.sendStatus(200);
+}
+
+export const createComment = async (req, res) => {
+    
+    const {
+        session: { user },
+        body: { text },
+        params: { id },
+    } = req;
+
+    const video = await Video.findById(id);
+    if(!video) {
+        return res.sendStatus(404);
+    }
+    const comment = await Comment.create({
+        text,
+        owner: user._id, // 세션에 현재 로그인한 유저를 owner로
+        video: id,
+    });
+    video.comments.push(comment._id);
+    video.save();
+    return res.status(201).json({ newCommentId: commend._id });
+}
+
+export const deleteComment = async (req, res) => {
+
+    const {
+        params: { id },
+        session: {user: {_id}},
+    } = req;
+   
+    const comment = await Comment.findById(id);
+    if(!comment) {
+        return res.status(400).json({ message: "comment doesn't exists." });
+    }
+    if(String(comment.owner) !== String(_id)) {
+        return res.status(400).json({ message: "user doesn't match." });
+    }
+    await Comment.findByIdAndDelete(id);
+    return res.sendStatus(200);
+
 }
