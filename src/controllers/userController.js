@@ -197,7 +197,7 @@ export const postEdit = async (req, res) => {
         location,
     });
     req.session.user = { // 세션에서 값 업데이트
-        ...req.session.user, // 나머지는 이전 session값과 동일
+      //  ...req.session.user, // 나머지는 이전 session값과 동일
         name,
         email,
         username,
