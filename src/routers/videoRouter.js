@@ -8,8 +8,8 @@ import {
     deleteVideo,
     postEdit,
     
-} from "../controllers/videoController";
-import { protectorMiddleware, videoUpload } from "../middlewares";
+} from "../controllers/videoController.js";
+import { protectorMiddleware, videoUpload } from "../middlewares.js";
 
 
 const videoRouter = express.Router();

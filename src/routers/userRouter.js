@@ -1,6 +1,6 @@
 
 import express from "express";
-import { protectorMiddleware, publicOnlyMiddleware, avatarUpload} from "../middlewares";
+import { protectorMiddleware, publicOnlyMiddleware, avatarUpload} from "../middlewares.js";
 import {
     getEdit, 
     postEdit,
@@ -10,7 +10,7 @@ import {
     startGithubLogin, 
     finishGithubLogin,
     getChangePassword,
-    postChangePassword} from "../controllers/userController";
+    postChangePassword} from "../controllers/userController.js";
 
 const userRouter = express.Router();
 

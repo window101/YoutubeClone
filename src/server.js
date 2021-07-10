@@ -7,11 +7,11 @@ import session from "express-session";
 import flash from "express-flash";
 import MongoStore from "connect-mongo";
 
-import rootRouter from "./routers/rootRouter";
-import videoRouter from "./routers/videoRouter";
-import userRouter from "./routers/userRouter";
-import { localsMiddleware } from "./middlewares";
-import apiRouter from "./routers/apiRouter";
+import rootRouter from "./routers/rootRouter.js";
+import videoRouter from "./routers/videoRouter.js";
+import userRouter from "./routers/userRouter.js";
+import { localsMiddleware } from "./middlewares.js";
+import apiRouter from "./routers/apiRouter.js";
 
 
 const app = express();
