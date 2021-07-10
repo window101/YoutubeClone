@@ -1,7 +1,7 @@
 
-import Video from "../models/Video";
-import User from "../models/User";
-import Comment from "../models/Comment";
+import Video from "../models/Video.js";
+import User from "../models/User.js";
+import Comment from "../models/Comment.js";
 
 /* callback 방식
 Video.find({}, (error, videos) => {

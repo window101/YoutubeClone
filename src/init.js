@@ -2,9 +2,9 @@
 import "regenerator-runtime";
 import "dotenv/config"; 
 import "./db.js"; // db.js 파일 import 하면 자동 실행됨
-import "./models/Video";
-import "./models/User";
-import "./models/Comment";
+import "./models/Video.js";
+import "./models/User.js";
+import "./models/Comment.js";
 import app from "./server.js";
 
 const PORT = 4000;
