@@ -7,8 +7,8 @@
     "url": "git+https://github.com/window101/YoutubeClone.git"
   },
   "scripts": {
-    "start" : "node build/init.js",
-    "build" : "npm run build:server",
+    "start": "node build/init.js",
+    "build": "npm run build:server",
     "build:server": "babel src -d build",
     "dev:server": "nodemon",
     "dev:assets": "webpack --config webpack.config.js"
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/window101/YoutubeClone#readme",
   "dependencies": {
+    "babel-cli": "^6.26.0",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.4.1",
     "dotenv": "^10.0.0",
